@@ -69,21 +69,29 @@ def home(request):
     )
 
     topics = Topic.objects.all()
-    context = {'rooms':rooms,'topics':topics}
+    room_count = rooms.count()
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
+    context = {'rooms':rooms,'topics':topics,'room_count':room_count,'room_messages':room_messages,'room_count':room_count}
     return render(request,'base/home.html',context)
 
 def room(request,pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('-created')
-    if request.method == 'POST':
-        message = request.POST.get('message')
-        if message:
-            room.message_set.create(user=request.user, body=message)
-            return redirect('room', pk=room.id)
-        else:
-            messages.error(request,'Message cannot be empty')
+    participants = room.participants.all()
     
-    context = {'room':room,'room_messages':room_messages}
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user = request.user,
+            room = room,
+            body = request.POST.get('body')
+        )
+        room.participants.add(request.user)
+        return redirect('room',pk=room.id)
+
+
+
+    
+    context = {'room':room,'room_messages':room_messages, 'participants':participants}
     return render(request,'base/room.html',context)
 
 @login_required(login_url='login')
@@ -122,3 +130,13 @@ def deleteRoom(request,pk):
         room.delete()
         return redirect('home')
     return render(request,'base/delete.html',{'obj':room})
+
+@login_required(login_url='login')
+def deleteMessage(request,pk):
+    message = Message.objects.get(id=pk)
+    if request.user != message.user:
+        return HttpResponse('You are not allowed here')
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request,'base/delete.html',{'obj':message})
