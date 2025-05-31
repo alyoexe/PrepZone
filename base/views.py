@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate , login , logout
 from .forms import RoomForm , UserForm , MyUserCreationForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 
 
 
@@ -122,7 +123,7 @@ def createRoom(request):
         topic_name = request.POST.get('topic')
         topic , created = Topic.objects.get_or_create(name=topic_name)
         
-        Room.object.create(
+        Room.objects.create(
             host = request.user,
             topic = topic,
             name = request.POST.get('name'),
@@ -182,9 +183,9 @@ def deleteMessage(request,pk):
 @login_required(login_url='login')
 def updateUser(request):
     user = request.user
-    form = UserCreationForm(instance=user)
+    form = UserForm(instance=user)
     if request.method == 'POST':
-        form = UserCreationForm(request.POST,request.FILES,instance=user)
+        form = UserForm(request.POST,request.FILES,instance=user)
         if form.is_valid():
             form.save()
             return redirect('user-profile',pk=user.id)
@@ -194,20 +195,20 @@ def updateUser(request):
     return render(request,'base/update-user.html',context)
 
 
-@login_required(login_url='login')
-def updateUser(request):
-    user = request.user
+# @login_required(login_url='login')
+# def updateUser(request):
+#     user = request.user
 
-    if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'User updated successfully')
-            return redirect('user-profile', pk=user.id)
-        else:
-            messages.error(request, 'An error has occurred during update')
-    context = {'form':UserForm(instance=user)}
-    return render(request,'base/update-user.html',context)
+#     if request.method == 'POST':
+#         form = UserForm(request.POST,request.FILES, instance=user)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'User updated successfully')
+#             return redirect('user-profile', pk=user.id)
+#         else:
+#             messages.error(request, 'An error has occurred during update')
+#     context = {'form':UserForm(instance=user)}
+#     return render(request,'base/update-user.html',context)
 
 
 
