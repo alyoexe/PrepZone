@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-60c4mh6aoq=(o=-xd(ei^ol*eeh3(7@b)7pns%2_03()di_puw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://alyoexe.pythonanywhere.com/']
+ALLOWED_HOSTS = ['alyoexe.pythonanywhere.com']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Application definition
