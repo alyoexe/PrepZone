@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-60c4mh6aoq=(o=-xd(ei^ol*eeh3(7@b)7pns%2_03()di_puw
 DEBUG = False
 
 ALLOWED_HOSTS = ['alyoexe.pythonanywhere.com']
-
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Application definition
 
@@ -123,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+
 MEDIA_URL = '/images/'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
