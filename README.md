@@ -30,7 +30,9 @@ StudyRoom is a full-stack web application built using **Django** for the backend
 
 ## 📸 Screenshots
 
+### 🏠 Home-page
 ![Home Page Screenshot](home-page.png)
+### 🏠 Profil-epage
 ![Profile Page Screenshot](profile-page.png)
 ## 🌐 Live Demo
 
